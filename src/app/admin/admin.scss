@@ -1,0 +1,363 @@
+$color1: #206cff;
+
+body {
+  background-color: rgb(240, 240, 240);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin {
+  padding: 1em;
+
+  nav {
+    gap: 1em;
+    margin-bottom: 2em;
+    a {
+      text-decoration: none;
+      color: black;
+      padding: 0.5em 1em;
+      background: rgb(230, 230, 230);
+    }
+    a.active {
+      background-color: $color1;
+      color: white;
+    }
+  }
+
+  .loader {
+    width: 3em;
+    height: 3em;
+    border: 0.4em solid #fff;
+    border-bottom-color: $color1;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .cta_btn2 {
+    border: $color1 1px solid;
+    color: $color1;
+    background: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .cta_btn {
+    background-color: $color1;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .section_module {
+    padding: 30px;
+    background: white;
+    border-radius: 5px;
+
+    h2 {
+      margin-bottom: 10px;
+    }
+    hr {
+      border: solid 1px rgb(240, 240, 240);
+      margin-bottom: 10px;
+    }
+    input,
+    select,
+    textarea {
+      padding: 10px;
+      border: none;
+      background: rgb(240, 240, 240);
+      max-width: 300px;
+    }
+
+    .input {
+      .label {
+        font-size: 14px;
+        padding: 2px;
+        color: grey;
+      }
+      .nominee_item {
+        border-bottom: solid 1px rgb(240, 240, 240);
+        width: 300px;
+        margin-bottom: 5px;
+        padding: 0.2em;
+      }
+    }
+
+    .current_config {
+      padding: 15px;
+      border-radius: 10px;
+      border: solid 1px rgb(240, 240, 240);
+      margin-bottom: 10px;
+
+      .results {
+        gap: 20px;
+        .result {
+          padding-bottom: 20px;
+          h5 {
+            margin-bottom: -25px;
+            margin-left: 10px;
+            z-index: 2;
+          }
+          .graph {
+            border-left: solid 1px rgb(200, 200, 200);
+            border-bottom: solid 1px rgb(200, 200, 200);
+            gap: 20px;
+            padding: 0 10px;
+            margin-top: 10px;
+            padding-top: 20px;
+
+            .contestant {
+              height: 150px;
+              justify-content: flex-end;
+              margin-bottom: -20px;
+              .bar {
+                background-color: rgb(230, 230, 230);
+                height: 0%;
+                width: 100%;
+                font-size: 12px;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+              }
+              span {
+                font-size: 12px;
+                margin-top: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .admin_table {
+    width: 300px;
+    background-color: rgb(240, 240, 240);
+    border-radius: 5px;
+    overflow: hidden;
+    .thead {
+      background-color: $color1;
+      .th {
+        padding: 0.5em 1em;
+        color: white;
+        flex: 1;
+        text-align: center;
+      }
+    }
+    .tbody {
+      overflow: auto;
+      .tr {
+        display: grid;
+        grid-template-columns: 30px 50px 1fr;
+
+        .td {
+          padding: 0.4em;
+          flex: 1;
+          text-align: left;
+          cursor: pointer;
+        }
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+    .nominate_label {
+      font-size: 0.8em;
+      justify-content: center;
+      color: grey;
+    }
+  }
+
+  .user_table {
+    width: 100%;
+    background-color: rgb(240, 240, 240);
+    border-radius: 5px;
+    overflow: hidden;
+    .thead {
+      background-color: $color1;
+      display: grid;
+      grid-template-columns: 80px 100px 1fr 1fr 120px 1fr;
+      .th {
+        padding: 0.5em 1em;
+        color: white;
+        flex: 1;
+        text-align: center;
+      }
+    }
+    .tbody {
+      overflow: auto;
+      .tr {
+        display: grid;
+        grid-template-columns: 80px 100px 1fr 1fr 120px 1fr;
+
+        .td {
+          padding: 0.4em;
+          flex: 1;
+          text-align: center;
+        }
+
+        .btns {
+          justify-content: center;
+          gap: 5px;
+
+          .btn {
+            background-color: $color1;
+            color: white;
+            padding: 0.5em 1em;
+            border-radius: 0.2em;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+            height: 2.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .btn2 {
+            background: none;
+            border: solid 0.1em $color1;
+            color: $color1;
+          }
+        }
+        input,
+        select {
+          width: 100%;
+          text-align: center;
+          border-bottom: solid 1px black;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        input:read-only {
+          border: none;
+        }
+
+        select[disabled] {
+          border: none;
+          color: black;
+          opacity: 1;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          text-indent: 1px;
+          text-overflow: "";
+        }
+      }
+    }
+  }
+
+  .quiz {
+    padding: 20px;
+    border: solid 1px rgb(230, 230, 230);
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+
+    .input {
+      width: 100%;
+      textarea {
+        min-width: 100%;
+        height: auto;
+      }
+    }
+
+    .options {
+      margin-top: 20px;
+      gap: 5px;
+      .option {
+        padding: 5px;
+        border: solid 1px rgb(230, 230, 230);
+        position: relative;
+        span {
+          position: absolute;
+          left: 15px;
+          top: 12px;
+        }
+        textarea {
+          min-width: 100%;
+          padding: 10px;
+          padding-left: 35px;
+          padding-right: 110px;
+          background: none;
+        }
+
+        .btns {
+          position: absolute;
+          right: 10px;
+          top: 5px;
+          gap: 5px;
+          .btn {
+            font-size: 0.75em;
+            color: white;
+            padding: 5px;
+            background-color: $color1;
+            border-radius: 3px;
+            cursor: pointer;
+          }
+          .answer_btn {
+            color: $color1;
+            background: none;
+            border: solid 1px $color1;
+            cursor: pointer;
+            &:hover {
+              background: $color1;
+              color: white;
+            }
+          }
+          .remove {
+            background-color: red;
+          }
+        }
+      }
+      .answer_option {
+        border: solid 1px $color1;
+        background-color: $color1;
+        color: white;
+
+        textarea {
+          color: white;
+        }
+      }
+      .add_option {
+        font-size: 0.75em;
+        padding: 0.5em 1em;
+        background-color: $color1;
+        align-self: start;
+        color: white;
+        border-radius: 0.25em;
+        cursor: pointer;
+      }
+    }
+
+    textarea {
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

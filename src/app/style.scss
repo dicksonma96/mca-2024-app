@@ -37,6 +37,7 @@ body {
 
 .client_app {
   font-size: 16px;
+  min-height: 100vh;
   .color1 {
     color: $color1;
   }
@@ -61,6 +62,38 @@ body {
     min-width: 10em;
     font-size: 1em;
   }
+  .skeleton {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    width: 100%;
+    height: 5em;
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+      );
+      rotate: 45deg;
+      animation: skeleton 2s infinite;
+    }
+  }
+  @keyframes skeleton {
+    from {
+      left: -100%;
+    }
+    30%,
+    100% {
+      left: 100%;
+    }
+  }
 
   .main_banner {
     width: 100%;
@@ -80,6 +113,70 @@ body {
       color: #e9c394;
       font-weight: 300;
       font-size: 1em;
+    }
+  }
+
+  .login_popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+
+    .login_window {
+      width: 80%;
+      max-width: 350px;
+      padding: 2em 1em;
+      position: relative;
+      border-radius: 0.5em;
+      overflow: hidden;
+      background: $color4;
+      align-items: center;
+
+      h1 {
+        text-align: center;
+      }
+
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      input {
+        border: none;
+        background: none;
+        border-bottom: solid 1px $color1;
+        margin: 0.5em 0 0;
+        font-size: 4em;
+        color: $color1;
+        text-align: center;
+        width: 3em;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .error {
+        font-size: 1em;
+        color: $color1;
+        padding: 1em;
+        width: 100%;
+        border: solid 0.1em $color1;
+        border-radius: 0.5em;
+        margin: 0.5em 0;
+      }
     }
   }
 
@@ -132,6 +229,9 @@ body {
       padding: 1em;
       gap: 2em;
       position: relative;
+      -webkit-animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      animation-delay: 0.5s;
       &::after {
         content: "";
         position: absolute;
@@ -144,6 +244,7 @@ body {
         .time {
           color: white;
           margin-right: 3em;
+          min-width: 3.5em;
         }
         .col {
           flex: 1;
@@ -176,6 +277,10 @@ body {
       border-radius: 5px;
       padding: 20px;
       width: 100%;
+      .warning_message {
+        text-align: center;
+        width: 100%;
+      }
       .nominee {
         font-size: 1em;
         padding: 0.75em 1em;
@@ -188,6 +293,13 @@ body {
           background: rgba(255, 255, 255, 0.1);
         }
         .check_icon {
+          opacity: 0;
+          font-size: 1.5em;
+        }
+        em {
+          margin-left: auto;
+          margin-right: 0.5em;
+          font-size: 0.7em;
           opacity: 0;
         }
       }
@@ -211,12 +323,86 @@ body {
         align-self: flex-end;
       }
     }
+
+    .voted {
+      .nominee {
+        display: none;
+      }
+      .selected_nominee {
+        background-color: $color1;
+        display: flex;
+        color: black;
+        em {
+          opacity: 1;
+        }
+      }
+      .cta_btn {
+        display: none;
+      }
+    }
+  }
+  .winner_list {
+    width: 100%;
+    gap: 2em;
+    position: relative;
+    align-items: center;
+    .winner_title {
+      font-size: 1em;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+    }
+    .confetti {
+      left: 0;
+      top: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .winner {
+      width: 100%;
+      border: solid 1px $color1;
+      align-items: center;
+      h2 {
+        margin-top: -0.75em;
+        background-color: $color5;
+        padding: 0 1em;
+        font-size: 1.2em;
+        font-weight: 300;
+      }
+      h1 {
+        padding: 1em 0 1.5em;
+        font-style: italic;
+      }
+    }
   }
 
   .quiz {
     padding: 1em;
     background-color: $color4;
     height: 10em;
+    .banner_container {
+      position: relative;
+      .quiz_status {
+        pointer-events: none;
+        position: absolute;
+        left: 47%;
+        transform: translateX(-50%);
+        bottom: 0.65em;
+        border-radius: 1em;
+        font-size: 1em;
+        padding: 0.3em 1em;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      .status_active {
+        background-color: $color1;
+        color: #130b0a;
+      }
+    }
     .banner {
       width: 100%;
       height: auto;
@@ -276,6 +462,10 @@ body {
               flex: 1;
             }
           }
+          .message {
+            color: $color1;
+            text-align: center;
+          }
 
           .question {
             letter-spacing: 0.1ch;
@@ -283,7 +473,7 @@ body {
             margin-top: 0.5em;
           }
           .options {
-            margin: 2em 0 3em;
+            margin: 2em 0 1em;
             gap: 0.5em;
             .option {
               font-size: 1em;
@@ -300,17 +490,25 @@ body {
               &:hover {
                 background: rgba(255, 255, 255, 0.05);
               }
+              em {
+                display: none;
+              }
             }
 
             .selected_option,
             .selected_option:hover {
               background-color: $color1;
               color: $color5;
+
+              em {
+                display: block;
+              }
             }
           }
 
           .nav_btns {
             width: 100%;
+            margin-top: 1em;
             .nav_btn {
               padding: 0.5em 1em;
               min-width: 10em;
@@ -333,6 +531,26 @@ body {
           }
         }
       }
+    }
+  }
+
+  .loader {
+    width: 3em;
+    height: 3em;
+    border: 0.4em solid #fff;
+    border-bottom-color: $color1;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 }

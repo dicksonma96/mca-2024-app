@@ -9,7 +9,7 @@ function Schedule() {
   return (
     <Flipper flipKey={expand}>
       {expand ? (
-        <div className="schedule">
+        <div className="schedule col">
           <div className="schedule_header row">
             <span
               className="material-symbols-outlined color1"
@@ -43,11 +43,11 @@ function Schedule() {
           <div className="agenda_listing col">
             {agenda.map((agenda, index) => (
               <div className="agenda row" key={index}>
-                <div className="time">{agenda.time}</div>
+                <div className="time">{agenda?.time}</div>
                 <div className="col">
-                  <strong className="color1">{agenda.agenda}</strong>
+                  <strong className="color1">{agenda?.agenda}</strong>
                   <ul>
-                    {agenda.description.map((desc, index) => (
+                    {agenda?.description?.map((desc, index) => (
                       <li key={index}>{desc}</li>
                     ))}
                   </ul>
@@ -55,6 +55,12 @@ function Schedule() {
               </div>
             ))}
           </div>
+          <h3
+            className="color1"
+            style={{ fontWeight: 300, alignSelf: "center", fontSize: "2em" }}
+          >
+            FIN
+          </h3>
         </div>
       ) : (
         <div className="schedule_btn row" onClick={() => setExpand(true)}>

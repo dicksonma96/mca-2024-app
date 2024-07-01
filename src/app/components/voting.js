@@ -2,15 +2,20 @@
 
 import Image from "next/image";
 import Banner from "@/app/lib/assets/best_dress_banner.jpg";
-import { useState } from "react";
-import toTwoDigits from "../lib/utils/toTwoDigits";
+import { useEffect, useState } from "react";
+import { useAppContext } from "../context/clientAppContext";
+import Skeleton from "./skeleton";
+import SubmitButton from "./submitButton";
+import { SubmitVote } from "../actions";
+import ConfettiExplosion from "react-confetti-explosion";
 
-function Voting({ status }) {
+function Voting() {
   // Status
   //   0 = Not open yet,
   //   1 = Open for voting,
   //   2 = Ended, result in review,
   //   3 = Ended with result
+  const { eventConfig, loading } = useAppContext();
   return (
     <>
       <Image
@@ -19,79 +24,113 @@ function Voting({ status }) {
         alt="MCA Best Dress Award 2024"
       />
 
-      <div className="voting row">
-        {status == 0 && (
-          <div className="message color1">
-            "Voting will Begin Shortly, Get Ready to Cast Your Vote: Who Will
-            Win the Best Dressed Award?"
-          </div>
-        )}
-        {status == 2 && (
-          <div className="message color1">
-            "The Excitement Builds: Results Are Currently Being Tallied!"
-          </div>
-        )}
-        {status == 1 && <VotingForm />}
-      </div>
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <div className="voting row">
+          {eventConfig?.best_dress.status == 0 && (
+            <div className="message color1">
+              "Voting will Begin Shortly, Get Ready to Cast Your Vote: Who Will
+              Win the Best Dressed Award?"
+            </div>
+          )}
+          {eventConfig?.best_dress.status == 2 && (
+            <div className="message color1">
+              "Voting Ended. The Excitement Builds: Results Are Currently Being
+              Tallied!"
+            </div>
+          )}
+          {eventConfig?.best_dress.status == 1 && <VotingForm />}
+          {eventConfig?.best_dress.status == 3 && (
+            <div className="winner_list col">
+              <h1 className="winner_title ">CONGRATULATIONS TO THE WINNERS</h1>
+              <div className="col winner">
+                <h2 className="color1">BEST DRESS FEMALE WINNER</h2>
+
+                <h1 className="color2">
+                  "{eventConfig?.best_dress.winner.female[0].name}"
+                </h1>
+              </div>
+              <div className="col winner">
+                <h2 className="color1">BEST DRESS MALE WINNER</h2>
+
+                <h1 className="color2">
+                  "{eventConfig?.best_dress.winner.male[0].name}"
+                </h1>
+              </div>
+              <div className="confetti">
+                <ConfettiExplosion
+                  colors={[
+                    "#3C1F13",
+                    "#954F2B",
+                    "#D8853E",
+                    "#FAC972",
+                    "#FCF0D6",
+                  ]}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }
 
 function VotingForm() {
-  const sample = {
-    male: [
-      {
-        id: 1,
-        name: "Jinny Tiow",
-      },
-      {
-        id: 5,
-        name: "Jinny Wong",
-      },
-      {
-        id: 15,
-        name: "Jinny Tan",
-      },
-    ],
-    female: [
-      {
-        id: 3,
-        name: "Jimmy 1",
-      },
-      {
-        id: 7,
-        name: "Jimmy 2",
-      },
-      {
-        id: 20,
-        name: "Jimmy 3",
-      },
-    ],
-  };
-  const [nominee, setNominee] = useState([]);
   const [selected, setSelected] = useState();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const { eventConfig, userInfo, GetEventInfo } = useAppContext();
+
+  useEffect(() => {
+    setErrorMessage(null);
+  }, [selected]);
+
+  useEffect(() => {
+    setSelected((prev) => ({
+      ...userInfo?.bestDressVote[0],
+    }));
+  }, [userInfo]);
+
+  const HandleSubmitVote = async () => {
+    let formdata = new FormData();
+    formdata.append("seat", userInfo.seat);
+    formdata.append("male", selected.male);
+    formdata.append("female", selected.female);
+
+    let res = await SubmitVote(formdata);
+
+    if (res.success == false) {
+      setErrorMessage(res.message);
+    } else {
+      GetEventInfo();
+    }
+  };
 
   return (
-    <div className="vote_form col">
+    <form
+      action={HandleSubmitVote}
+      className={`vote_form col ${
+        userInfo?.bestDressVote.length ? "voted" : ""
+      }`}
+    >
       <h1>Best Dressed Male</h1>
-      {sample.male.map((item, index) => (
+      {eventConfig?.best_dress.nominee.male.map((item, index) => (
         <div
           className={`nominee color1 row ${
-            selected?.male == item.id ? "selected_nominee" : ""
+            selected?.male == item.seat ? "selected_nominee" : ""
           }`}
           key={index}
           onClick={() => {
             setSelected((prev) => ({
               ...prev,
-              male: item.id,
+              male: item.seat,
             }));
           }}
         >
-          {toTwoDigits(item.id)} - {item.name}
-          <span
-            className="check_icon material-symbols-outlined color5"
-            style={{ fontSize: "1.5em", marginLeft: "auto" }}
-          >
+          {item.seat} - {item.name}
+          <em>You Voted</em>
+          <span className="check_icon material-symbols-outlined color5">
             check
           </span>
         </div>
@@ -100,33 +139,52 @@ function VotingForm() {
       <hr />
 
       <h1>Best Dressed Female</h1>
-      {sample.female.map((item, index) => (
+      {eventConfig?.best_dress.nominee.female.map((item, index) => (
         <div
           className={`nominee color1 row ${
-            selected?.female == item.id ? "selected_nominee" : ""
+            selected?.female == item.seat ? "selected_nominee" : ""
           }`}
           key={index}
           onClick={() => {
             setSelected((prev) => ({
               ...prev,
-              female: item.id,
+              female: item.seat,
             }));
           }}
         >
-          {toTwoDigits(item.id)} - {item.name}
-          <span
-            className="check_icon material-symbols-outlined color5"
-            style={{ fontSize: "1.5em", marginLeft: "auto" }}
-          >
+          {item.seat} - {item.name}
+          <em>You Voted</em>
+          <span className="check_icon material-symbols-outlined color5">
             check
           </span>
         </div>
       ))}
       <br />
       {selected && selected.male && selected.female && (
-        <button className="cta_btn">Submit</button>
+        <>
+          {errorMessage ? (
+            <p className="color1 warning_message">{errorMessage}</p>
+          ) : (
+            <p className="color1 warning_message">
+              {userInfo?.bestDressVote.length ? (
+                "Thank you for your participation. The results will be announced soon."
+              ) : (
+                <>
+                  Please ensure that you are voting as{" "}
+                  <strong>
+                    {userInfo?.title} {userInfo?.name}
+                  </strong>
+                </>
+              )}
+            </p>
+          )}
+
+          <br />
+
+          <SubmitButton />
+        </>
       )}
-    </div>
+    </form>
   );
 }
 

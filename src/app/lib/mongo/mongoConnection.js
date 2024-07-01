@@ -25,7 +25,7 @@ async function getClient() {
 
 async function getDatabase() {
   const client = await getClient();
-  return client.db("mcadb");
+  return client.db("mca-app-db");
 }
 
 export default getDatabase;
