@@ -12,7 +12,8 @@ function UserListing() {
     <div className="section_module col">
       <h2>MCA 2024 Guests</h2>
       <hr />
-
+      <input type="file" />
+      <br />
       <div className="user_table col">
         <div className="thead row">
           <div className="th">Seat</div>
