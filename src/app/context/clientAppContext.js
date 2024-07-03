@@ -9,6 +9,7 @@ export const AppContextProvider = ({ children }) => {
   const [eventConfig, setEventConfig] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
   const [configLoading, setConfigLoading] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [error, setError] = useState(null);
 
   const GetEventInfo = async () => {
@@ -48,7 +49,6 @@ export const AppContextProvider = ({ children }) => {
     if (userInfo) {
       localStorage.setItem("mca-2024-seat", userInfo.seat);
     }
-    console.log(userInfo);
   }, [userInfo]);
 
   return (
@@ -61,6 +61,8 @@ export const AppContextProvider = ({ children }) => {
         GetEventInfo,
         GetUserInfo,
         userLoading,
+        showLogin,
+        setShowLogin,
       }}
     >
       {children}

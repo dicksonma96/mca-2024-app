@@ -9,7 +9,8 @@ import { useAppContext } from "../context/clientAppContext";
 function Login() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
-  const { setUserInfo, userLoading } = useAppContext();
+  const { userInfo, setUserInfo, userLoading, showLogin, setShowLogin } =
+    useAppContext();
 
   const handleSignIn = async (formData) => {
     let res = await SignIn(formData);
@@ -20,13 +21,24 @@ function Login() {
     }
   };
 
-  return (
+  return showLogin && userInfo == null ? (
     <div className="login_popup col">
       {userLoading ? (
         <Loader />
       ) : (
         <form action={handleSignIn} className="login_window col">
-          <h1 className="color1">Please enter your seat number</h1>
+          <span
+            className="material-symbols-outlined close_btn"
+            onClick={() => {
+              setShowLogin(false);
+            }}
+          >
+            close
+          </span>
+
+          <h1 className="color1">
+            Please enter your <br /> seat number
+          </h1>
           {error && <div className="error">{error}</div>}
 
           {pending ? (
@@ -46,6 +58,8 @@ function Login() {
         </form>
       )}
     </div>
+  ) : (
+    <></>
   );
 }
 

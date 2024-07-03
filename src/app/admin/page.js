@@ -1,18 +1,23 @@
 "use client";
 
 import "./admin.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAdminContext } from "./adminContext";
 import { UpdateUser, DeleteUser, CreateUser } from "../actions";
 
 function UserListing() {
   const { usersLoading, users } = useAdminContext();
+  const fileRef = useRef(null);
 
   return (
     <div className="section_module col">
       <h2>MCA 2024 Guests</h2>
       <hr />
-      <input type="file" />
+      <div className="admin_btns row">
+        {/* <label className="user_file data_btn">
+          <span>Import Data</span>
+        </label> */}
+      </div>
       <br />
       <div className="user_table col">
         <div className="thead row">

@@ -137,6 +137,14 @@ body {
       background: $color4;
       align-items: center;
 
+      .close_btn {
+        position: absolute;
+        right: 0.5em;
+        top: 0.5em;
+        font-size: 1.5em;
+        color: $color1;
+      }
+
       h1 {
         text-align: center;
       }
@@ -184,9 +192,9 @@ body {
     background: $color4;
     align-items: center;
     padding: 1em 1em;
-    margin: 1em 0;
     border-radius: 0.5em;
     cursor: pointer;
+    position: relative;
     .date {
       align-items: center;
       margin-right: 1.5em;
@@ -195,9 +203,16 @@ body {
     &:hover {
       filter: brightness(1.2);
     }
+    hr {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      opacity: 0;
+    }
   }
 
-  .schedule {
+  .schedule_popup {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
@@ -223,43 +238,56 @@ body {
         border-left: solid 0.1em rgba(255, 255, 255, 0.2);
       }
     }
+  }
+  .agenda_listing {
+    padding: 2em 1.5em;
+    gap: 2em;
+    position: relative;
+    -webkit-animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 
-    .agenda_listing {
-      margin: 2em 0;
-      padding: 1em;
-      gap: 2em;
-      position: relative;
-      -webkit-animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-      animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-      animation-delay: 0.5s;
-      &::after {
-        content: "";
-        position: absolute;
-        left: 21%;
-        height: 100%;
-        border-left: dashed 1px $color1;
+    hr {
+      border: solid 0.1em rgba(255, 255, 255, 0.1);
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 23%;
+      top: 2em;
+      height: calc(100% - 4em);
+      border-left: dashed 1px $color1;
+    }
+    .agenda {
+      align-items: flex-start;
+      .time {
+        color: white;
+        margin-right: 3em;
+        min-width: 3.5em;
       }
-      .agenda {
-        align-items: flex-start;
-        .time {
-          color: white;
-          margin-right: 3em;
-          min-width: 3.5em;
-        }
-        .col {
-          flex: 1;
+      .col {
+        flex: 1;
 
-          ul {
-            padding-left: 1.5em;
-            li {
-              color: white;
-              opacity: 0.5;
-              font-size: 1em;
-            }
+        ul {
+          padding-left: 1.5em;
+          li {
+            color: white;
+            opacity: 0.5;
+            font-size: 1em;
           }
         }
       }
     }
+  }
+  .schedule {
+    background: $color4;
+    margin: 1em 0;
+    border-radius: 0.5em;
+    overflow: hidden;
   }
 
   .voting {

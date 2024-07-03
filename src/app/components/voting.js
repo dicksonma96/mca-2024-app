@@ -15,7 +15,8 @@ function Voting() {
   //   1 = Open for voting,
   //   2 = Ended, result in review,
   //   3 = Ended with result
-  const { eventConfig, loading } = useAppContext();
+  const { eventConfig, configLoading, userInfo, userLoading, setShowLogin } =
+    useAppContext();
   return (
     <>
       <Image
@@ -24,8 +25,13 @@ function Voting() {
         alt="MCA Best Dress Award 2024"
       />
 
-      {loading ? (
-        <Skeleton />
+      {configLoading || userLoading ? (
+        <div
+          className="row"
+          style={{ justifyContent: "center", padding: "2em" }}
+        >
+          <div className="loader"></div>
+        </div>
       ) : (
         <div className="voting row">
           {eventConfig?.best_dress.status == 0 && (
@@ -40,7 +46,23 @@ function Voting() {
               Tallied!"
             </div>
           )}
-          {eventConfig?.best_dress.status == 1 && <VotingForm />}
+          {eventConfig?.best_dress.status == 1 && userInfo ? (
+            <VotingForm />
+          ) : (
+            <div
+              className="message color1 col"
+              style={{ width: "100%", alignItems: "center" }}
+            >
+              <span>
+                "Voting is Happening Now! Enter your seat number to
+                participate."
+              </span>
+              <br />
+              <div className="cta_btn" onClick={() => setShowLogin(true)}>
+                Enter
+              </div>
+            </div>
+          )}
           {eventConfig?.best_dress.status == 3 && (
             <div className="winner_list col">
               <h1 className="winner_title ">CONGRATULATIONS TO THE WINNERS</h1>
@@ -78,9 +100,9 @@ function Voting() {
 }
 
 function VotingForm() {
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
-  const { eventConfig, userInfo, GetEventInfo } = useAppContext();
+  const { eventConfig, userInfo, GetEventInfo, setShowLogin } = useAppContext();
 
   useEffect(() => {
     setErrorMessage(null);
@@ -93,6 +115,11 @@ function VotingForm() {
   }, [userInfo]);
 
   const HandleSubmitVote = async () => {
+    if (userInfo == null) {
+      setShowLogin(true);
+      return;
+    }
+
     let formdata = new FormData();
     formdata.append("seat", userInfo.seat);
     formdata.append("male", selected.male);

@@ -10,7 +10,7 @@ import { SubmitAnswer } from "@/app/actions";
 
 function Quiz() {
   const [expand, setExpand] = useState(false);
-  const { eventConfig } = useAppContext();
+  const { userInfo, eventConfig, setShowLogin } = useAppContext();
   const status = [
     "Coming Soon",
     "Play Now",
@@ -19,7 +19,13 @@ function Quiz() {
   ];
 
   const openQuiz = () => {
-    if (eventConfig?.quizzes.status == 1) setExpand(true);
+    if (eventConfig?.quizzes.status == 1) {
+      if (userInfo) {
+        setExpand(true);
+        return;
+      }
+      setShowLogin(true);
+    }
   };
   return (
     <>

@@ -2,7 +2,7 @@
 
 import { useAdminContext } from "../adminContext";
 import getAlphabetByNumber from "@/app/lib/utils/getAlphabetByNumber";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { UpdateQuiz, UpdateQuizStatus } from "@/app/actions";
 import UserTable from "../components/userTable";
 
@@ -17,8 +17,12 @@ function Quizzes() {
   ];
   const [quizStatus, setQuizStatus] = useState(currentConfig?.quizzes.status);
   const [quizWinner, setQuizWinner] = useState([]);
-  const handleUpdateQuizStatus = async (formdata) => {
+  const statusRef = useRef(null);
+  const handleUpdateQuizStatus = async () => {
+    let formdata = new FormData();
+
     formdata.append("winner", quizWinner);
+    formdata.append("status", statusRef.current.value);
     try {
       setLoading(true);
       let res = await UpdateQuizStatus(formdata);
@@ -62,18 +66,22 @@ function Quizzes() {
       {loading ? (
         <div className="loader"></div>
       ) : (
-        <form action={handleUpdateQuizStatus} className="input col">
+        <div className="input col">
           <span className="label">Quiz Status:</span>
           <select
             name="status"
             defaultValue={quizStatus}
             onChange={(e) => setQuizStatus(e.target.value)}
+            ref={statusRef}
           >
-            {status.map((state, index) => (
-              <option key={index} value={`${index}`}>
-                {state}
-              </option>
-            ))}
+            {status.map((state, index) => {
+              if (index != currentConfig?.quizzes.status)
+                return (
+                  <option key={index} value={`${index}`}>
+                    {state}
+                  </option>
+                );
+            })}
           </select>
           <br />
           {quizStatus == "3" && (
@@ -84,7 +92,7 @@ function Quizzes() {
                   {quizWinner[0]?.name || "Choose a winner"}
 
                   <span
-                    class="material-symbols-outlined"
+                    className="material-symbols-outlined"
                     style={{
                       marginLeft: "auto",
                       color: "grey",
@@ -106,10 +114,15 @@ function Quizzes() {
               <br />
             </>
           )}
-          <button className="cta_btn" style={{ alignSelf: "flex-start" }}>
-            Update
+          <button
+            disabled={loading}
+            className="cta_btn"
+            style={{ alignSelf: "flex-start" }}
+            onClick={handleUpdateQuizStatus}
+          >
+            {loading ? "Updating" : "Update"}
           </button>
-        </form>
+        </div>
       )}
 
       <br />

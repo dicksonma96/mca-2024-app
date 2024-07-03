@@ -7,12 +7,30 @@ import Quiz from "../components/quiz";
 import Schedule from "../components/schedule";
 import Login from "../components/login";
 import { useAppContext } from "../context/clientAppContext";
+import { config } from "@/middleware";
 
 export default function Home() {
-  const { userInfo } = useAppContext();
+  const { userInfo, userLoading, configLoading } = useAppContext();
 
   return (
     <>
+      {(userLoading || configLoading) && (
+        <div
+          className="row"
+          style={{
+            justifyContent: "center",
+            zIndex: "999",
+            background: "rgba(0,0,0,0.5)",
+            position: "fixed",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <div className="loader"></div>
+        </div>
+      )}
       <Image className="main_banner" src={Banner} alt="MCA 2024" />
       <div className="welcome_panel col">
         {userInfo ? (
@@ -34,7 +52,7 @@ export default function Home() {
       </div>
       <Voting />
       <Quiz />
-      {userInfo == null && <Login />}
+      <Login />
     </>
   );
 }
