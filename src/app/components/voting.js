@@ -46,23 +46,24 @@ function Voting() {
               Tallied!"
             </div>
           )}
-          {eventConfig?.best_dress.status == 1 && userInfo ? (
-            <VotingForm />
-          ) : (
-            <div
-              className="message color1 col"
-              style={{ width: "100%", alignItems: "center" }}
-            >
-              <span>
-                "Voting is Happening Now! Enter your seat number to
-                participate."
-              </span>
-              <br />
-              <div className="cta_btn" onClick={() => setShowLogin(true)}>
-                Enter
+          {eventConfig?.best_dress.status == 1 &&
+            (userInfo ? (
+              <VotingForm />
+            ) : (
+              <div
+                className="message color1 col"
+                style={{ width: "100%", alignItems: "center" }}
+              >
+                <span>
+                  "Voting is Happening Now! Enter your seat number to
+                  participate."
+                </span>
+                <br />
+                <div className="cta_btn" onClick={() => setShowLogin(true)}>
+                  Enter
+                </div>
               </div>
-            </div>
-          )}
+            ))}
           {eventConfig?.best_dress.status == 3 && (
             <div className="winner_list col">
               <h1 className="winner_title ">CONGRATULATIONS TO THE WINNERS</h1>
