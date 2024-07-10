@@ -118,27 +118,27 @@ function QuizContent() {
   };
 
   const HandleSubmitAnswer = async () => {
-    if (!selected.hasOwnProperty("0")) {
+    if (Object.keys(selected).length === 0) {
       setCurrent(0);
       setErrorMessage(
         "Make sure to answer all the question before you submit :)"
       );
       return;
     }
-    if (!selected.hasOwnProperty("1")) {
-      setCurrent(1);
-      setErrorMessage(
-        "Make sure to answer all the question before you submit :)"
-      );
+
+    if (
+      eventConfig.quizzes.quiz.some((value, index) => {
+        if (!Object.keys(selected).includes(index.toString())) {
+          setCurrent(index);
+          setErrorMessage(
+            "Make sure to answer all the question before you submit :)"
+          );
+          return true;
+        }
+      })
+    )
       return;
-    }
-    if (!selected.hasOwnProperty("2")) {
-      setCurrent(2);
-      setErrorMessage(
-        "Make sure to answer all the question before you submit :)"
-      );
-      return;
-    }
+
     let selected_array = Object.keys(selected).map((key) => selected[key]);
     let formdata = new FormData();
     formdata.append("seat", userInfo.seat);

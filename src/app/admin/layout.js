@@ -10,7 +10,13 @@ function Admin({ children }) {
   return (
     <AdminContextProvider>
       <main className="admin">
-        <h1 style={{ fontSize: "2em" }}>MCA 2024 ADMIN PANEL</h1>
+        <div className="row">
+          <h1 style={{ fontSize: "2em" }}>MCA 2024 ADMIN PANEL</h1>
+
+          <Link href={"/"} className="cta_btn" style={{ marginLeft: "auto" }}>
+            Client App
+          </Link>
+        </div>
         <hr
           style={{ border: "1px dashed rgb(220,220,220)", margin: "1em 0" }}
         />

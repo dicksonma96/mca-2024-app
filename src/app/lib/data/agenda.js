@@ -1,96 +1,113 @@
 export default [
   {
-    time: "5:30pm",
+    time: "6:00pm",
     agenda: "ARRIVAL & REGISTRATION",
-    description: [
-      "Refreshments Served",
-      "Guests to be seated at their tables",
-    ],
-  },
-  {
-    time: "6:30pm",
-    agenda: "OPENING REMARKS",
-    description: [
-      "Recap video of Motherhood Choice Award 2023",
-      "Emcee Welcome Remarks",
-      "Thank You Speech by Petrina Goh, CEO & Co-founder of Nuren Group",
-      "Speech by Maton Shukor, Creative Director",
-      "Motherhood Choice Award 2024 Opening Video",
-    ],
-  },
-  {
-    time: "6:35pm",
-    agenda: "AWARD CEREMONY COMMENCEMENT",
-    description: [
-      "Main Categories introduction",
-      "Award Ceremony Segment 1 - Family Category",
-    ],
   },
   {
     time: "6:45pm",
-    agenda: "AWARD CEREMONY SEGMENT 2 - KIDS CATEGORY",
-    description: ["Honoring excellence in the Kids Category"],
-  },
-  {
-    time: "6:55pm",
-    agenda: "INTERMISSION 1: QUIZ CONTEST & BEST DRESSED CONTEST",
-    description: ["Enjoy a fun quiz and celebrate the best dressed! Test your knowledge and showcase your style. Exciting prizes await!"],
+    agenda: "DOOR OPEN",
   },
   {
     time: "7:00pm",
-    agenda: "DINNER"
+    agenda: "OPENING REMARKS",
+    description: [
+      "Motherhood Choice Award 2024 Opening Video",
+      "Emcee Welcome Remarks",
+    ],
   },
   {
-    time: "7:10pm",
-    agenda: "AWARD CEREMONY SEGMENT 3 - MOTHERS CATEGORY",
-    description: ["Celebrate outstanding achievements in products and services supporting Mothers on their journey."],
+    time: "7:05pm",
+    agenda: "DINNER - 1ST & 2ND COURSE",
+    description: [
+      "黑松露饺 Steamed Black Truffle with Mushroom Chicken Dumplingr",
+      "甜豆炒带子 Sweet Peas with Fresh Scallop",
+      "炸杏仁芝士虾 Deep Fried Prawn Roll with Cheese and Almond Flakes",
+      "什果鲜虾沙律 Fresh Prawn Salad with mix fruits",
+      "白玉鮑丝海参鱼鳔羹 Braised Sea Cucumber, Fish Maw with Shredded Jade Abalone Soup",
+    ],
   },
   {
     time: "7:20pm",
-    agenda: "AWARD CEREMONY SEGMENT 4 - BABY CATEGORY",
-    description: ["Celebrate the best in baby products and services."],
+    agenda: "AWARD CEREMONY - FAMILY SEGMENT",
   },
   {
     time: "7:30pm",
-    agenda: "INTERMISSION 2: PERFORMANCE BY GOGOKIDS",
-    description: ["Enjoy an exciting performance by GoGoKids! Sit back and be entertained by their vibrant showcase."],
+    agenda: "AWARD CEREMONY - MOTHERS SEGMENT",
   },
   {
-    time: "7:50pm",
-    agenda: "INTERMISSION 3: QUIZ CONTEST & BEST DRESSED CONTEST CLOSING"
+    time: "7:40pm",
+    agenda: "INTERMISSION 1: QUIZ CONTEST & BEST DRESSED CONTEST",
+    description: ["Scan the QR code on the tent card to play and win cash prizes."],
+  },
+  {
+    time: "7:45pm",
+    agenda: "DINNER - 3RD & 4TH COURSE",
+    description: [
+      "港式烧味拼 Duo of Crispy Roasted Chicken and Duck",
+      "金银蒜蒸银鲳鱼 Steamed Silver Pomfret with Garlic Sauce",
+  ],
   },
   {
     time: "8:00pm",
     agenda: "MOTHERHOOD EXPERTS AWARD",
-    description: ["Recognizing our doctors, nurses and panel of experts that shapes motherhood."],
+    description: ["Recognizing our panel of experts that shapes motherhood."],
   },
   {
     time: "8:05pm",
-    agenda: "MOTHERHOOD SUPERMOM AWARD",
-    description:["Honoring extraordinary supermoms who inspire and lead by example."]
+    agenda: "AWARD CEREMONY - KIDS SEGMENT",
   },
   {
     time: "8:20pm",
-    agenda: "INTERMISSION 4: QUIZ WINNER ANNOUNCEMENT & BEST DRESSED ANNOUNCEMENT (MAN & WOMAN)",
-    description:["Find out the quiz champions and who shines as Best Dressed (Man & Woman)!"]
+    agenda: "MOTHERHOOD SUPERMOM AWARD - KOL Edition",
   },
   {
-    time: "8:35pm",
-    agenda: "MOTHERHOOD SUPER PARENTS AWARD",
-    description: ["Recognizing outstanding parents whose love and dedication set a remarkable example in nurturing their children."],
+    time: "8:25pm",
+    agenda: "DINNER - 5TH & 6TH COURSE",
+    description:
+    [
+      "天津焗草虾 Wok-fried Tiger Prawns Tianjin Style",
+      "豆泡鱼镖兰花蔬 Braised Beancurd Puff with Fish Maw and Brocolli",
+    ],
+    agenda:"INTERMISSION 2: PERFORMANCE BY GOGOKIDS",
   },
   {
     time: "8:45pm",
-    agenda: "INTERMISSION 5: PERFORMANCE BY HUNNY MADU",
-    description:["Experience the captivating performance by Hunny Madu!"]
+    agenda: "AWARD CEREMONY - BABY SEGMENT",
   },
   {
-    time: "8:50pm",
-    agenda: "CLOSING REMARKS & PHOTO SESSION",
-    description: ["Conclude the evening with inspiring closing remarks and capture memories with a group photo session."],
+    time: "8:55pm",
+    agenda: "MOTHERHOOD SUPERMOM AWARD - Celebrity Edition",
   },
   {
     time: "9:00pm",
-    agenda: "EVENT END"
+    agenda: "QUIZ & BEST DRESSED CONTEST CLOSING",
+    description:
+    [
+      "Last Chance to play and win cash prizes by scanning the QR Code."
+    ],
+  },
+  {
+    time: "9:10pm",
+    agenda: "DINNER - 7TH COURSE",
+    description: ["海鲜炒香饭 Wok-fried Rice with Variety of Fresh Seafood"],
+  },
+  {
+    time: "9:20pm",
+    agenda: "MOTHERHOOD SUPER PARENTS AWARD"
+  },
+  {
+    time: "9:30pm",
+    agenda: "DESSERTS - 8TH & 9TH COURSE",
+    description:
+    [
+      "凤凰马蹄羹 Double- Boiled Water Chestnut with Egg White and White Fungus",
+      "戈饼 Chinese Pancake",
+      "芝麻枣 Sesame Ball",
+    ],
+    agenda:"INTERMISSION 4: QUIZ & BEST DRESSED CONTEST WINNERS ANNOUNCEMENT",
+  },
+  {
+    time: "9.45pm",
+    agenda: "CLOSING REMARKS & PHOTO SESSION"
   }
 ];

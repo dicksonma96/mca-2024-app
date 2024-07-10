@@ -2,6 +2,7 @@
 
 import getDatabase from "@/app/lib/mongo/mongoConnection";
 import { ObjectId } from "mongodb";
+import readCsv from "./lib/utils/readCsv";
 
 export async function updateConfig(customData, formdata) {
   try {
@@ -105,6 +106,20 @@ export async function SubmitVote(formdata) {
   }
 }
 
+export async function ResetVote() {
+  try {
+    const db = await getDatabase();
+    const collection = await db.collection("best_dress_vote");
+    await collection.deleteMany({});
+
+    if (data.modifiedCount == 0) throw { message: "Update failed" };
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+}
+
 export async function CreateUser(formdata) {
   try {
     const db = await getDatabase();
@@ -115,7 +130,6 @@ export async function CreateUser(formdata) {
       brand: formdata.get("brand"),
       title: formdata.get("title"),
       seat: formdata.get("seat"),
-      rsvp: formdata.get("rsvp"),
     });
     if (data.modifiedCount == 0) throw { message: "Update failed" };
 
@@ -140,7 +154,6 @@ export async function UpdateUser(formdata) {
           brand: formdata.get("brand"),
           title: formdata.get("title"),
           seat: formdata.get("seat"),
-          rsvp: formdata.get("rsvp"),
         },
       }
     );
@@ -163,6 +176,30 @@ export async function DeleteUser(formdata) {
     if (data.modifiedCount == 0) throw { message: "Delete failed" };
 
     return { data: data, success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: error.message };
+  }
+}
+
+export async function UploadUser(formdata) {
+  try {
+    const db = await getDatabase();
+    const collection = await db.collection("users");
+    let file = formdata.get("file");
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    let dataArray = await readCsv(buffer);
+    const fields = ["name", "brand", "title", "seat"];
+    if (Object.keys(dataArray[0]).some((f) => !fields.includes(f)))
+      return { success: false, message: "Invalid field format" };
+
+    await collection.deleteMany({});
+
+    let data = await collection.insertMany(dataArray);
+    if (data.modifiedCount == 0) throw { message: "Update failed" };
+
+    return { success: true };
   } catch (error) {
     console.log(error);
     return { success: false, message: error.message };

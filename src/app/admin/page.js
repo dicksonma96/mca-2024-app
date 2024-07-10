@@ -3,48 +3,109 @@
 import "./admin.scss";
 import { useEffect, useState, useRef } from "react";
 import { useAdminContext } from "./adminContext";
-import { UpdateUser, DeleteUser, CreateUser } from "../actions";
+import { UpdateUser, DeleteUser, CreateUser, UploadUser } from "../actions";
+import Sample from "@/app/lib/assets/csv-data-sample.jpg";
+import Image from "next/image";
+import Popup from "../components/popup";
 
 function UserListing() {
-  const { usersLoading, users } = useAdminContext();
-  const fileRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const { usersLoading, users, GetUser } = useAdminContext();
+  const [fileInput, setFileInput] = useState(null);
+  const [openImport, setOpenImport] = useState(false);
+
+  const ImportData = async () => {
+    try {
+      setLoading(true);
+      let formdata = new FormData();
+      formdata.append("file", fileInput);
+      let res = await UploadUser(formdata);
+      if (res.success) {
+        alert("Successfully updated");
+        GetUser();
+      } else throw res.message;
+    } catch (e) {
+      alert(e);
+    } finally {
+      setOpenImport(false);
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="section_module col">
-      <h2>MCA 2024 Guests</h2>
-      <hr />
-      <div className="admin_btns row">
-        {/* <label className="user_file data_btn">
-          <span>Import Data</span>
-        </label> */}
-      </div>
-      <br />
-      <div className="user_table col">
-        <div className="thead row">
-          <div className="th">Seat</div>
-          <div className="th">Title</div>
-          <div className="th">Name</div>
-          <div className="th">Brand</div>
-          <div className="th">RSVP</div>
-          <div className="th"></div>
-        </div>
-        {usersLoading ? (
+    <>
+      <div className="section_module col">
+        <h2>MCA 2024 Guests</h2>
+        <hr />
+        <div className="admin_btns row">
           <div
-            className="row"
-            style={{ width: "100%", justifyContent: "center", height: "200px" }}
+            className="user_file data_btn"
+            onClick={() => {
+              setOpenImport(true);
+            }}
           >
-            <div className="loader"></div>
+            Import Data (CSV file)
           </div>
-        ) : (
-          <div className="tbody col">
-            <AddUser />
-            {users?.map((user, index) => (
-              <User key={index} user={user} />
-            ))}
+        </div>
+
+        <br />
+        <div className="user_table col">
+          <div className="thead row">
+            <div className="th">Seat</div>
+            <div className="th">Title</div>
+            <div className="th">Name</div>
+            <div className="th">Brand</div>
+            <div className="th"></div>
           </div>
-        )}
+          {usersLoading ? (
+            <div
+              className="row"
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                height: "200px",
+              }}
+            >
+              <div className="loader"></div>
+            </div>
+          ) : (
+            <div className="tbody col">
+              <AddUser />
+              {users?.map((user, index) => (
+                <User key={index} user={user} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      {openImport && (
+        <Popup
+          title={"Import"}
+          confirmText="Import"
+          onClose={() => {
+            setOpenImport(false);
+          }}
+          confirmDisable={!fileInput || loading}
+          onConfirm={ImportData}
+        >
+          <br />
+          <input
+            onInput={(e) => {
+              setFileInput(e.target.files[0]);
+            }}
+            type="file"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          />
+          <br />
+          <a
+            href="https://docs.google.com/spreadsheets/d/1DmPXEbvT_uzbhAEwVXo1FPXgfFmt_aIwNfCBr9Ta_Pw/copy"
+            target="_blank"
+          >
+            Get A Data Template
+          </a>
+        </Popup>
+      )}
+    </>
   );
 }
 
@@ -63,7 +124,6 @@ function User({ user }) {
     formdata.append("title", userData.title);
     formdata.append("name", userData.name);
     formdata.append("brand", userData.brand);
-    formdata.append("rsvp", userData.rsvp);
 
     try {
       setLoading(true);
@@ -163,16 +223,7 @@ function User({ user }) {
           required
         />
       </div>
-      <div className="td">
-        <select
-          disabled={!editing}
-          onChange={(e) => handleOnChange(e, "rsvp")}
-          defaultValue={userData.rsvp}
-        >
-          <option value={1}>Confirmed</option>
-          <option value={0}>Pending</option>
-        </select>
-      </div>
+
       <div className="td row btns">
         {editing ? (
           <>
@@ -218,7 +269,6 @@ function AddUser() {
     title: "Mr",
     name: "",
     brand: "",
-    rsvp: 1,
   });
   const { GetUser } = useAdminContext();
 
@@ -228,7 +278,6 @@ function AddUser() {
     formdata.append("title", userData.title);
     formdata.append("name", userData.name);
     formdata.append("brand", userData.brand);
-    formdata.append("rsvp", userData.rsvp);
 
     try {
       setLoading(true);
@@ -304,15 +353,7 @@ function AddUser() {
           required
         />
       </div>
-      <div className="td">
-        <select
-          onChange={(e) => handleOnChange(e, "rsvp")}
-          defaultValue={userData?.rsvp}
-        >
-          <option value={1}>Confirmed</option>
-          <option value={0}>Pending</option>
-        </select>
-      </div>
+
       <div className="td row btns">
         {confirm ? (
           <>

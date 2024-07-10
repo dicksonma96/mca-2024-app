@@ -3,11 +3,11 @@
 import "../admin.scss";
 import UserTable from "../components/userTable";
 import { useEffect, useState } from "react";
-import { updateConfig } from "@/app/actions";
+import { updateConfig, ResetVote } from "@/app/actions";
 import SubmitButton from "../components/submitButton";
 import { useAdminContext } from "../adminContext";
 import getGenderList from "@/app/lib/utils/getGenderList";
-import Loader from "../components/loader";
+import Popup from "@/app/components/popup";
 
 const eventStatusText = [
   "Not Open Yet",
@@ -199,6 +199,7 @@ function BestDress() {
 function CurrentVoteStatus({ currentConfig }) {
   const [loading, setLoading] = useState(false);
   const [voteCount, setVoteCount] = useState(null);
+  const [openResetVote, setOpenResetVote] = useState(false);
 
   const GetVoteCount = async () => {
     try {
@@ -215,6 +216,22 @@ function CurrentVoteStatus({ currentConfig }) {
     }
   };
 
+  const ResetVoteCount = async () => {
+    try {
+      setLoading(true);
+      let res = await ResetVote();
+      if (res.success) {
+        alert("Vote reset successful");
+      }
+      await GetVoteCount();
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      setOpenResetVote(false);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (currentConfig) GetVoteCount();
   }, [currentConfig]);
@@ -227,73 +244,100 @@ function CurrentVoteStatus({ currentConfig }) {
   };
 
   return (
-    <div className="current_config col">
-      <div className="current_status">
-        Current Voting Event Status:{" "}
-        <strong>{eventStatusText[currentConfig?.best_dress.status]}</strong>
-      </div>
-      {currentConfig?.best_dress.status != 0 && (
-        <>
-          <br />
-          {loading ? (
-            <div
-              className="row"
-              style={{
-                height: "150px",
-                width: "300px",
-                justifyContent: "center",
-              }}
-            >
-              <div className="loader"></div>
-            </div>
-          ) : (
-            <div className="results row">
-              <div className="result col">
-                <h5>Female result</h5>
-                <div className="graph row">
-                  {voteCount?.female.map((item, index) => (
-                    <div key={index} className="contestant col">
-                      <div
-                        className="bar"
-                        style={{ height: `${getPercentage(item.vote, "f")}%` }}
-                      >
-                        {item.vote} votes
+    <>
+      <div className="current_config col">
+        <div className="current_status">
+          Current Voting Event Status:{" "}
+          <strong>{eventStatusText[currentConfig?.best_dress.status]}</strong>
+        </div>
+        {currentConfig?.best_dress.status != 0 && (
+          <>
+            <br />
+            {loading ? (
+              <div
+                className="row"
+                style={{
+                  height: "150px",
+                  width: "300px",
+                  justifyContent: "center",
+                }}
+              >
+                <div className="loader"></div>
+              </div>
+            ) : (
+              <div className="results row">
+                <div className="result col">
+                  <h5>Female result</h5>
+                  <div className="graph row">
+                    {voteCount?.female.map((item, index) => (
+                      <div key={index} className="contestant col">
+                        <div
+                          className="bar"
+                          style={{
+                            height: `${getPercentage(item.vote, "f")}%`,
+                          }}
+                        >
+                          {item.vote} votes
+                        </div>
+                        <span>{item.name}</span>
                       </div>
-                      <span>{item.name}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+                <div className="result col">
+                  <h5>Male result</h5>
+                  <div className="graph row">
+                    {voteCount?.male.map((item, index) => (
+                      <div key={index} className="contestant col">
+                        <div
+                          className="bar"
+                          style={{
+                            height: `${getPercentage(item.vote, "m")}%`,
+                          }}
+                        >
+                          {item.vote} votes
+                        </div>
+                        <span>{item.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="result col">
-                <h5>Male result</h5>
-                <div className="graph row">
-                  {voteCount?.male.map((item, index) => (
-                    <div key={index} className="contestant col">
-                      <div
-                        className="bar"
-                        style={{ height: `${getPercentage(item.vote, "m")}%` }}
-                      >
-                        {item.vote} votes
-                      </div>
-                      <span>{item.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+            )}
 
-          <br />
-          <button
-            onClick={GetVoteCount}
-            className="cta_btn"
-            style={{ alignSelf: "flex-start" }}
-          >
-            Refresh Vote Count
-          </button>
-        </>
+            <br />
+            <div className="row">
+              <button
+                onClick={GetVoteCount}
+                className="cta_btn"
+                style={{ alignSelf: "flex-start" }}
+              >
+                Refresh Vote Count
+              </button>
+
+              <button
+                className="cta_btn"
+                style={{ marginLeft: "10px", background: "red" }}
+                onClick={() => setOpenResetVote(true)}
+              >
+                Reset All Vote
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+      {openResetVote && (
+        <Popup
+          title="Reset vote"
+          onClose={() => {
+            setOpenResetVote(false);
+          }}
+          onConfirm={ResetVoteCount}
+        >
+          <p>All vote data will be removed, are you sure to reset the vote? </p>
+        </Popup>
       )}
-    </div>
+    </>
   );
 }
 
