@@ -7,10 +7,10 @@ import Quiz from "../components/quiz";
 import Schedule from "../components/schedule";
 import Login from "../components/login";
 import { useAppContext } from "../context/clientAppContext";
-import { config } from "@/middleware";
 
 export default function Home() {
-  const { userInfo, userLoading, configLoading } = useAppContext();
+  const { userInfo, userLoading, configLoading, setShowLogin } =
+    useAppContext();
 
   return (
     <>
@@ -40,6 +40,9 @@ export default function Home() {
               {userInfo?.title} {userInfo?.name} from {userInfo.brand}, Table
               Seat: {userInfo.seat}
             </h5>
+            <em onClick={() => setShowLogin(true)}>
+              Made a mistake? Change your seat number here
+            </em>
           </>
         ) : (
           <>

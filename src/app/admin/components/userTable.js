@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 function UserTable({
   data,
@@ -7,13 +7,38 @@ function UserTable({
   limit = 3,
   thead = "Participants",
 }) {
+  const [search, setSearch] = useState(null);
+
+  const FilteredData = () => {
+    if (search)
+      return data.filter((item) => {
+        let _search = search.toLowerCase();
+
+        if (item.seat.toLowerCase().includes(_search)) return item;
+
+        if (item.name.toLowerCase().includes(_search)) return item;
+      });
+
+    return data;
+  };
+
   return (
     <div className="admin_table">
       <div className="thead row">
         <div className="th">{thead}</div>
       </div>
+      <div className="searchbox row">
+        <input
+          type="text"
+          placeholder="Search"
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
+        <span className="material-symbols-outlined icon">search</span>
+      </div>
       <div className="tbody col">
-        {data?.map((item, index) => (
+        {FilteredData()?.map((item, index) => (
           <div
             className="tr"
             key={index}

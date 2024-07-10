@@ -114,6 +114,15 @@ body {
       font-weight: 300;
       font-size: 1em;
     }
+    em {
+      text-decoration: underline;
+      color: rgb(200, 200, 200);
+      font-weight: 300;
+      font-size: 0.8em;
+      margin-top: 1em;
+      align-self: flex-end;
+      cursor: pointer;
+    }
   }
 
   .login_popup {

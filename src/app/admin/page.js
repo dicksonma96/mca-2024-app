@@ -6,13 +6,14 @@ import { useAdminContext } from "./adminContext";
 import { UpdateUser, DeleteUser, CreateUser, UploadUser } from "../actions";
 import Sample from "@/app/lib/assets/csv-data-sample.jpg";
 import Image from "next/image";
-import Popup from "../components/popup";
+import Popup from "./components/popup";
 
 function UserListing() {
   const [loading, setLoading] = useState(false);
   const { usersLoading, users, GetUser } = useAdminContext();
   const [fileInput, setFileInput] = useState(null);
   const [openImport, setOpenImport] = useState(false);
+  const [search, setSearch] = useState(null);
 
   const ImportData = async () => {
     try {
@@ -32,6 +33,19 @@ function UserListing() {
     }
   };
 
+  const FilteredData = () => {
+    if (search)
+      return users?.filter((item) => {
+        let _search = search.toLowerCase();
+
+        if (item.seat.toLowerCase().includes(_search)) return item;
+
+        if (item.name.toLowerCase().includes(_search)) return item;
+      });
+
+    return users;
+  };
+
   return (
     <>
       <div className="section_module col">
@@ -46,6 +60,15 @@ function UserListing() {
           >
             Import Data (CSV file)
           </div>
+
+          <input
+            style={{ marginLeft: "auto" }}
+            type="text"
+            placeholder="Search"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
         </div>
 
         <br />
@@ -71,7 +94,7 @@ function UserListing() {
           ) : (
             <div className="tbody col">
               <AddUser />
-              {users?.map((user, index) => (
+              {FilteredData()?.map((user, index) => (
                 <User key={index} user={user} />
               ))}
             </div>

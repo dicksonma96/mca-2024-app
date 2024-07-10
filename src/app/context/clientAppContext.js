@@ -39,6 +39,8 @@ export const AppContextProvider = ({ children }) => {
     let res = await SignIn(formData);
     setUserLoading(false);
     if (res.success) setUserInfo(res.data);
+
+    console.log(res.data);
   };
 
   useEffect(() => {

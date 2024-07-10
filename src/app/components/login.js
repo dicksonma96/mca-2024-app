@@ -14,14 +14,14 @@ function Login() {
 
   const handleSignIn = async (formData) => {
     let res = await SignIn(formData);
-
+    setShowLogin(false);
     if (res.success) setUserInfo(res.data);
     else {
       setError(res.message);
     }
   };
 
-  return showLogin && userInfo == null ? (
+  return showLogin ? (
     <div className="login_popup col">
       {userLoading ? (
         <Loader />

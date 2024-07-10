@@ -171,8 +171,22 @@ a {
         text-align: center;
       }
     }
+    .searchbox {
+      padding: 5px;
+      position: relative;
+      input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        padding-right: 40px;
+      }
+      .icon {
+        position: absolute;
+        right: 10px;
+      }
+    }
     .tbody {
       overflow: auto;
+      max-height: 250px;
       .tr {
         display: grid;
         grid-template-columns: 30px 50px 1fr;

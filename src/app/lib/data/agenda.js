@@ -37,7 +37,9 @@ export default [
   {
     time: "7:40pm",
     agenda: "INTERMISSION 1: QUIZ CONTEST & BEST DRESSED CONTEST",
-    description: ["Scan the QR code on the tent card to play and win cash prizes."],
+    description: [
+      "Scan the QR code on the tent card to play and win cash prizes.",
+    ],
   },
   {
     time: "7:45pm",
@@ -45,7 +47,7 @@ export default [
     description: [
       "港式烧味拼 Duo of Crispy Roasted Chicken and Duck",
       "金银蒜蒸银鲳鱼 Steamed Silver Pomfret with Garlic Sauce",
-  ],
+    ],
   },
   {
     time: "8:00pm",
@@ -63,12 +65,14 @@ export default [
   {
     time: "8:25pm",
     agenda: "DINNER - 5TH & 6TH COURSE",
-    description:
-    [
+    description: [
       "天津焗草虾 Wok-fried Tiger Prawns Tianjin Style",
       "豆泡鱼镖兰花蔬 Braised Beancurd Puff with Fish Maw and Brocolli",
     ],
-    agenda:"INTERMISSION 2: PERFORMANCE BY GOGOKIDS",
+  },
+  {
+    time: "",
+    agenda: "INTERMISSION 2: PERFORMANCE BY GOGOKIDS",
   },
   {
     time: "8:45pm",
@@ -81,10 +85,13 @@ export default [
   {
     time: "9:00pm",
     agenda: "QUIZ & BEST DRESSED CONTEST CLOSING",
-    description:
-    [
-      "Last Chance to play and win cash prizes by scanning the QR Code."
+    description: [
+      "Last Chance to play and win cash prizes by scanning the QR Code.",
     ],
+  },
+  {
+    time: "",
+    agenda: "INTERMISSION 3: PERFORMANCE BY HUNNY MADU",
   },
   {
     time: "9:10pm",
@@ -93,21 +100,23 @@ export default [
   },
   {
     time: "9:20pm",
-    agenda: "MOTHERHOOD SUPER PARENTS AWARD"
+    agenda: "MOTHERHOOD SUPER PARENTS AWARD",
   },
   {
     time: "9:30pm",
     agenda: "DESSERTS - 8TH & 9TH COURSE",
-    description:
-    [
+    description: [
       "凤凰马蹄羹 Double- Boiled Water Chestnut with Egg White and White Fungus",
       "戈饼 Chinese Pancake",
       "芝麻枣 Sesame Ball",
     ],
-    agenda:"INTERMISSION 4: QUIZ & BEST DRESSED CONTEST WINNERS ANNOUNCEMENT",
+  },
+  {
+    time: "",
+    agenda: "INTERMISSION 4: QUIZ & BEST DRESSED CONTEST WINNERS ANNOUNCEMENT",
   },
   {
     time: "9.45pm",
-    agenda: "CLOSING REMARKS & PHOTO SESSION"
-  }
+    agenda: "CLOSING REMARKS & PHOTO SESSION",
+  },
 ];

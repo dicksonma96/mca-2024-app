@@ -7,7 +7,7 @@ import { updateConfig, ResetVote } from "@/app/actions";
 import SubmitButton from "../components/submitButton";
 import { useAdminContext } from "../adminContext";
 import getGenderList from "@/app/lib/utils/getGenderList";
-import Popup from "@/app/components/popup";
+import Popup from "@/app/admin/components/popup";
 
 const eventStatusText = [
   "Not Open Yet",

@@ -173,16 +173,16 @@ function QuizContent() {
             <p>{ques.question}</p>
           </div>
           <div className="options col">
-            {ques.options.map((option, index) => (
+            {ques.options.map((option, i) => (
               <div
                 className={`option row ${
-                  userInfo.quiz_answer[0].answer[index] == index
+                  userInfo.quiz_answer[0].answer[index] == i
                     ? "selected_option"
                     : ""
                 }`}
-                key={index}
+                key={i}
               >
-                <span>{getAlphabetByNumber(index)} -</span>
+                <span>{getAlphabetByNumber(i)} -</span>
                 <p>{option}</p>
                 <em style={{ marginLeft: "auto" }}>Your Answer</em>
               </div>
