@@ -6,6 +6,7 @@ function UserTable({
   setSelected,
   limit = 3,
   thead = "Participants",
+  additionalCol = [],
 }) {
   const [search, setSearch] = useState(null);
 
@@ -55,7 +56,7 @@ function UserTable({
               });
             }}
           >
-            <div className="td">
+            <div className="td" style={{ width: "25px" }}>
               <span
                 className="material-symbols-outlined"
                 style={{ fontSize: "15px" }}
@@ -65,8 +66,21 @@ function UserTable({
                   : "check_box_outline_blank"}
               </span>
             </div>
-            <div className="td">{item.seat}</div>
-            <div className="td">{item.name}</div>
+            <div className="td" style={{ width: "60px" }}>
+              {item.seat}
+            </div>
+            <div className="td" style={{ width: "170px" }}>
+              {item.name}
+            </div>
+            {additionalCol.map((field, index) => (
+              <div
+                key={index}
+                className="td"
+                style={{ width: field.width ? field.width : "auto" }}
+              >
+                {item[field.field_name]}
+              </div>
+            ))}
           </div>
         ))}
       </div>

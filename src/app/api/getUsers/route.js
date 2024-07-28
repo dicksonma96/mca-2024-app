@@ -82,20 +82,48 @@ export async function GET() {
             },
           },
         },
+        // {
+        //   $addFields: {
+        //     eligible: {
+        //       $cond: [
+        //         { $eq: ["$quizzes_answer", "$my_answer"] }, // Check if array1 is equal to array2
+        //         1, // Set eligible to 1 if arrays are equal
+        //         {
+        //           $cond: {
+        //             if: { $gt: [{ $size: "$my_answer" }, 0] },
+        //             then: 2, // Set eligible to 0 if array is empty
+        //             else: 0, // Set eligible to 2 if array is not empty
+        //           },
+        //         },
+        //       ],
+        //     },
+        //   },
+        // },
         {
           $addFields: {
-            eligible: {
-              $cond: [
-                { $eq: ["$quizzes_answer", "$my_answer"] }, // Check if array1 is equal to array2
-                1, // Set eligible to 1 if arrays are equal
-                {
-                  $cond: {
-                    if: { $gt: [{ $size: "$my_answer" }, 0] },
-                    then: 2, // Set eligible to 0 if array is empty
-                    else: 0, // Set eligible to 2 if array is not empty
+            quiz_score: {
+              $reduce: {
+                input: {
+                  $map: {
+                    input: { $range: [0, { $size: "$quizzes_answer" }] },
+                    as: "idx",
+                    in: {
+                      $cond: [
+                        {
+                          $eq: [
+                            { $arrayElemAt: ["$quizzes_answer", "$$idx"] },
+                            { $arrayElemAt: ["$my_answer", "$$idx"] },
+                          ],
+                        },
+                        1,
+                        0,
+                      ],
+                    },
                   },
                 },
-              ],
+                initialValue: 0,
+                in: { $add: ["$$value", "$$this"] },
+              },
             },
           },
         },

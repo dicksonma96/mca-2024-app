@@ -28,6 +28,33 @@ export async function updateConfig(customData, formdata) {
   }
 }
 
+export async function resetConfig() {
+  try {
+    const db = await getDatabase();
+    const collection = await db.collection("event_config");
+    await collection.updateMany(
+      {},
+      {
+        $set: {
+          "best_dress.status": "0",
+          "best_dress.nominee.female": [],
+          "best_dress.nominee.male": [],
+          "best_dress.winner.female": [],
+          "best_dress.winner.male": [],
+          "quizzes.status": "0",
+          "quizzes.winner": "",
+        },
+      }
+    );
+
+    if (data.modifiedCount == 0) throw { message: "Update failed" };
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+}
+
 export async function SignIn(formdata) {
   try {
     const db = await getDatabase();
@@ -197,6 +224,7 @@ export async function UploadUser(formdata) {
     await collection.deleteMany({});
 
     let data = await collection.insertMany(dataArray);
+    await resetConfig();
     if (data.modifiedCount == 0) throw { message: "Update failed" };
 
     return { success: true };
@@ -213,7 +241,10 @@ export async function UpdateQuizStatus(formdata) {
     let data = await collection.updateOne(
       {},
       {
-        $set: { "quizzes.status": formdata.get("status") },
+        $set: {
+          "quizzes.status": formdata.get("status"),
+          "quizzes.winner": formdata.get("winner"),
+        },
       }
     );
     if (data.modifiedCount == 0) throw { message: "Update failed" };
@@ -266,6 +297,20 @@ export async function SubmitAnswer(formdata) {
     });
 
     return { data: data, success: true };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+}
+
+export async function ResetQuizAnswer() {
+  try {
+    const db = await getDatabase();
+    const collection = await db.collection("quizzes_answer");
+    await collection.deleteMany({});
+
+    if (data.modifiedCount == 0) throw { message: "Update failed" };
+
+    return { success: true };
   } catch (error) {
     return { success: false, message: error.message };
   }

@@ -2,13 +2,15 @@
 
 import { useAdminContext } from "../adminContext";
 import getAlphabetByNumber from "@/app/lib/utils/getAlphabetByNumber";
-import { useState, useRef } from "react";
-import { UpdateQuiz, UpdateQuizStatus } from "@/app/actions";
+import { useState, useRef, useEffect } from "react";
+import { UpdateQuiz, UpdateQuizStatus, ResetQuizAnswer } from "@/app/actions";
 import UserTable from "../components/userTable";
+import Popup from "../components/popup";
 
 function Quizzes() {
   const { currentConfig, GetConfig, users } = useAdminContext();
   const [loading, setLoading] = useState(false);
+  const [openResetData, setOpenResetData] = useState(false);
   const status = [
     'Not Open Yet: "Coming Soon"',
     'Can Play Now: "Play Now"',
@@ -17,18 +19,22 @@ function Quizzes() {
   ];
   const [quizStatus, setQuizStatus] = useState(currentConfig?.quizzes.status);
   const [quizWinner, setQuizWinner] = useState([]);
-  const statusRef = useRef(null);
   const handleUpdateQuizStatus = async () => {
+    if (quizStatus == "3" && quizWinner.length == 0) {
+      alert("Please choose a winner");
+      return;
+    }
+
     let formdata = new FormData();
 
-    formdata.append("winner", quizWinner);
-    formdata.append("status", statusRef.current.value);
+    formdata.append("winner", quizWinner[0]?.seat);
+    formdata.append("status", quizStatus);
     try {
       setLoading(true);
       let res = await UpdateQuizStatus(formdata);
+      await GetConfig();
       if (res.success) {
         alert("Successfully updated");
-        GetConfig();
       } else throw res.message;
     } catch (e) {
       alert(e);
@@ -37,101 +43,146 @@ function Quizzes() {
     }
   };
 
+  const ResetData = async () => {
+    try {
+      setLoading(true);
+      let res = await ResetQuizAnswer();
+      await GetConfig();
+      if (res.success) {
+        alert("Vote reset successful");
+      }
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      setOpenResetData(false);
+      setLoading(false);
+    }
+  };
+
   const RandomUser = () => {
-    let eligible_users = users.filter((user) => user.eligible == 1);
-    setQuizWinner([
-      eligible_users[Math.floor(Math.random() * eligible_users.length)],
-    ]);
+    let highest_score = users?.sort((a, b) => b.quiz_score - a.quiz_score)[0]
+      .quiz_score;
+    let highscorer = users?.filter((user) => user.quiz_score == highest_score);
+
+    setQuizWinner([highscorer[Math.floor(Math.random() * highscorer.length)]]);
   };
 
   return (
-    <div className="section_module col">
-      <h2>Quizzes</h2>
-      <hr />
-      <div className="current_config col">
-        <div className="current_status">
-          Current Quizzes Status:{" "}
-          <strong>{status[currentConfig?.quizzes.status]}</strong>
-        </div>
-        <br />
-        {currentConfig?.quizzes.status == 3 && (
+    <>
+      <div className="section_module col">
+        <h2>Quizzes</h2>
+        <hr />
+        <div className="current_config col">
           <div className="current_status">
-            Displayed Winner:{" "}
-            <strong>{currentConfig?.quizzes.winner[0].seat}</strong>
-            {" - "}
-            <strong>{currentConfig?.quizzes.winner[0].name}</strong>
+            Current Quizzes Status:{" "}
+            <strong>{status[currentConfig?.quizzes.status]}</strong>
           </div>
-        )}
-      </div>
-      {loading ? (
-        <div className="loader"></div>
-      ) : (
-        <div className="input col">
-          <span className="label">Quiz Status:</span>
-          <select
-            name="status"
-            defaultValue={quizStatus}
-            onChange={(e) => setQuizStatus(e.target.value)}
-            ref={statusRef}
-          >
-            {status.map((state, index) => {
-              if (index != currentConfig?.quizzes.status)
+          <br />
+          {currentConfig?.quizzes.status == 3 && (
+            <div className="current_status">
+              Displayed Winner:{" "}
+              <strong>{currentConfig?.quizzes.winner[0].seat}</strong>
+              {" - "}
+              <strong>{currentConfig?.quizzes.winner[0].name}</strong>
+            </div>
+          )}
+        </div>
+        {loading ? (
+          <div className="loader"></div>
+        ) : (
+          <div className="input col">
+            <span className="label">Quiz Status:</span>
+            <select
+              name="status"
+              defaultValue={quizStatus}
+              onChange={(e) => setQuizStatus(e.target.value)}
+            >
+              {status.map((state, index) => {
                 return (
                   <option key={index} value={`${index}`}>
                     {state}
                   </option>
                 );
-            })}
-          </select>
-          <br />
-          {quizStatus == "3" && (
-            <>
-              <div className="input col">
-                <div className="label">Quiz Winner:</div>
-                <div className="nominee_item row">
-                  {quizWinner[0]?.name || "Choose a winner"}
+              })}
+            </select>
+            <br />
+            {quizStatus == "3" && (
+              <>
+                <div className="input col">
+                  <div className="label">Select a Winner:</div>
+                  <div className="nominee_item row">
+                    {quizWinner[0]?.name || "Choose a winner"}
 
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      marginLeft: "auto",
-                      color: "grey",
-                      cursor: "pointer",
-                    }}
-                    onClick={RandomUser}
-                  >
-                    casino
-                  </span>
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        marginLeft: "auto",
+                        color: "grey",
+                        cursor: "pointer",
+                      }}
+                      onClick={RandomUser}
+                    >
+                      casino
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <UserTable
-                thead={"Partipants with correct answer"}
-                data={users.filter((user) => user.eligible == 1)}
-                selected={quizWinner}
-                setSelected={setQuizWinner}
-                limit={1}
-              />
-              <br />
-            </>
-          )}
-          <button
-            disabled={loading}
-            className="cta_btn"
-            style={{ alignSelf: "flex-start" }}
-            onClick={handleUpdateQuizStatus}
-          >
-            {loading ? "Updating" : "Update"}
-          </button>
-        </div>
+                <UserTable
+                  thead={"Partipants & score out of 5"}
+                  data={users?.sort((a, b) => b.quiz_score - a.quiz_score)}
+                  selected={quizWinner}
+                  setSelected={setQuizWinner}
+                  limit={1}
+                  additionalCol={[
+                    {
+                      field_name: "quiz_score",
+                      width: "20px",
+                    },
+                  ]}
+                />
+                <br />
+              </>
+            )}
+            <div className="row" style={{ gap: 10 }}>
+              <button
+                disabled={loading}
+                className="cta_btn"
+                style={{ alignSelf: "flex-start" }}
+                onClick={handleUpdateQuizStatus}
+              >
+                {loading ? "Updating" : "Update"}
+              </button>
+              <button
+                className="cta_btn"
+                style={{ background: "red" }}
+                onClick={() => {
+                  setOpenResetData(true);
+                }}
+              >
+                Reset Guest's Answer
+              </button>
+            </div>
+          </div>
+        )}
+
+        <br />
+        <hr />
+
+        {currentConfig?.quizzes.quiz.map((ques, index) => (
+          <Quiz key={index} index={index} info={ques} />
+        ))}
+      </div>
+      {openResetData && (
+        <Popup
+          title="Reset Guest's Quiz Answer"
+          onClose={() => {
+            setOpenResetData(false);
+          }}
+          onConfirm={ResetData}
+        >
+          <p>All guest's quiz answer will be removed, are you sure? </p>
+        </Popup>
       )}
-
-      <br />
-      <hr />
-
-      {currentConfig?.quizzes.quiz.map((ques, index) => (
-        <Quiz key={index} index={index} info={ques} />
-      ))}
-    </div>
+    </>
   );
 }
 

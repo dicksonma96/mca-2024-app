@@ -71,14 +71,14 @@ function Voting() {
                 <h2 className="color1">BEST DRESS FEMALE WINNER</h2>
 
                 <h1 className="color2">
-                  "{eventConfig?.best_dress.winner.female[0].name}"
+                  "{eventConfig?.best_dress.winner.female[0]?.name}"
                 </h1>
               </div>
               <div className="col winner">
                 <h2 className="color1">BEST DRESS MALE WINNER</h2>
 
                 <h1 className="color2">
-                  "{eventConfig?.best_dress.winner.male[0].name}"
+                  "{eventConfig?.best_dress.winner.male[0]?.name}"
                 </h1>
               </div>
               <div className="confetti">

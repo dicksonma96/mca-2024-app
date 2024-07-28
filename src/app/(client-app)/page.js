@@ -35,14 +35,18 @@ export default function Home() {
       <div className="welcome_panel col">
         {userInfo ? (
           <>
-            <h1>WELCOME TO MCA 2024</h1>
-            <h5>
-              {userInfo?.title} {userInfo?.name} from {userInfo.brand}, Table
-              Seat: {userInfo.seat}
-            </h5>
-            <em onClick={() => setShowLogin(true)}>
-              Made a mistake? Change your seat number here
-            </em>
+            <h1>
+              {userInfo?.title} {userInfo?.name}
+              {", "}
+              {userInfo?.brand && `from ${userInfo?.brand}`} <br />{" "}
+            </h1>
+            <div className="row">
+              <h5>
+                Table {userInfo?.seat.split("-")[0]}, Seat{" "}
+                {userInfo?.seat.split("-")[1]}
+              </h5>
+              <em onClick={() => setShowLogin(true)}>Edit Seat Number</em>
+            </div>
           </>
         ) : (
           <>

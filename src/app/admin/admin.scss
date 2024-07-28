@@ -158,7 +158,7 @@ a {
     }
   }
   .admin_table {
-    width: 300px;
+    width: 350px;
     background-color: rgb(240, 240, 240);
     border-radius: 5px;
     overflow: hidden;
@@ -174,10 +174,12 @@ a {
     .searchbox {
       padding: 5px;
       position: relative;
+      width: 100%;
       input {
         width: 100%;
         background: rgba(0, 0, 0, 0.1);
         padding-right: 40px;
+        max-width: inherit;
       }
       .icon {
         position: absolute;
@@ -188,12 +190,10 @@ a {
       overflow: auto;
       max-height: 250px;
       .tr {
-        display: grid;
-        grid-template-columns: 30px 50px 1fr;
+        display: flex;
 
         .td {
           padding: 0.4em;
-          flex: 1;
           text-align: left;
           cursor: pointer;
         }
