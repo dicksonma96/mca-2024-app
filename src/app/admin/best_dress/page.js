@@ -35,6 +35,18 @@ function BestDress() {
   }, [eventStatus]);
 
   const SubmitUpdateConfig = async () => {
+    if (eventStatus == 1)
+      if (femaleNominee.length < 3 || maleNominee.length < 3) {
+        alert("Please select 3 nominees for each male and female");
+        return;
+      }
+    if (eventStatus == "3") {
+      if (femaleWinner.length < 1 || maleWinner.length < 1) {
+        alert("Please select a winner for each male and female");
+        return;
+      }
+    }
+
     let data = {
       status: eventStatus,
       nominee: {
