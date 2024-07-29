@@ -103,7 +103,7 @@ body {
   h1 {
     color: white;
     font-weight: 500;
-    font-size: 1.5em;
+    font-size: 1.4em;
     letter-spacing: 0.1ch;
   }
   .welcome_panel {
@@ -112,6 +112,15 @@ body {
     h5 {
       color: #e9c394;
       font-size: 1em;
+    }
+    .brand {
+      background: rgba(255, 255, 255, 0.1);
+      color: $color1;
+      padding: 0.2em 0.5em;
+      align-self: flex-start;
+      border-top-right-radius: 1em;
+      border-bottom-right-radius: 1em;
+      font-size: 0.8em;
     }
     em {
       text-decoration: underline;

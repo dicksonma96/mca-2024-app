@@ -35,10 +35,9 @@ export default function Home() {
       <div className="welcome_panel col">
         {userInfo ? (
           <>
+            {userInfo?.brand && <div className="brand">{userInfo?.brand}</div>}
             <h1>
               {userInfo?.title} {userInfo?.name}
-              {", "}
-              {userInfo?.brand && `from ${userInfo?.brand}`} <br />{" "}
             </h1>
             <div className="row">
               <h5>
