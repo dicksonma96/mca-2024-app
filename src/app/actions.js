@@ -173,10 +173,11 @@ export async function UpdateUser(formdata) {
     const collection = await db.collection("users");
     let data = await collection.updateOne(
       {
-        seat: formdata.get("seat"),
+        _id:ObjectId.createFromHexString(formdata.get("_id")),
       },
       {
         $set: {
+          seat:formdata.get("seat"),
           name: formdata.get("name"),
           brand: formdata.get("brand"),
           title: formdata.get("title"),
@@ -262,7 +263,7 @@ export async function UpdateQuiz(formdata) {
     const collection = await db.collection("quizzes");
     let data = await collection.updateOne(
       {
-        _id: new ObjectId(formdata.get("_id")),
+        _id: ObjectId.createFromHexString(formdata.get("_id")) ,
       },
       {
         $set: {

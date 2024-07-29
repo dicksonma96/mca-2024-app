@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useAdminContext } from "../adminContext";
 function UserTable({
   data,
   selected,
@@ -9,6 +9,7 @@ function UserTable({
   additionalCol = [],
 }) {
   const [search, setSearch] = useState(null);
+  const {GetUser,usersLoading } = useAdminContext();
 
   const FilteredData = () => {
     if (search)
@@ -27,6 +28,9 @@ function UserTable({
     <div className="admin_table">
       <div className="thead row">
         <div className="th">{thead}</div>
+        <span onClick={()=>{
+          GetUser()
+        }} style={{color:'white', marginRight:10,fontSize:'1em', cursor:'pointer'}} className="material-symbols-outlined icon">refresh</span>
       </div>
       <div className="searchbox row">
         <input
@@ -38,7 +42,10 @@ function UserTable({
         />
         <span className="material-symbols-outlined icon">search</span>
       </div>
-      <div className="tbody col">
+      {
+        usersLoading ? <div className="row" style={{padding:'1em', justifyContent:'center'}}>
+          <span className="loader"></span> 
+        </div>: <div className="tbody col">
         {FilteredData()?.map((item, index) => (
           <div
             className="tr"
@@ -84,6 +91,8 @@ function UserTable({
           </div>
         ))}
       </div>
+      }
+      
     </div>
   );
 }

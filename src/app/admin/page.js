@@ -243,7 +243,6 @@ function User({ user }) {
           onChange={(e) => handleOnChange(e, "brand")}
           readOnly={!editing}
           value={userData.brand}
-          required
         />
       </div>
 

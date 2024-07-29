@@ -8,7 +8,7 @@ import UserTable from "../components/userTable";
 import Popup from "../components/popup";
 
 function Quizzes() {
-  const { currentConfig, GetConfig, users } = useAdminContext();
+  const { currentConfig, GetConfig, users,GetUser } = useAdminContext();
   const [loading, setLoading] = useState(false);
   const [openResetData, setOpenResetData] = useState(false);
   const status = [
@@ -33,6 +33,7 @@ function Quizzes() {
       setLoading(true);
       let res = await UpdateQuizStatus(formdata);
       await GetConfig();
+      await GetUser();
       if (res.success) {
         alert("Successfully updated");
       } else throw res.message;
@@ -48,6 +49,7 @@ function Quizzes() {
       setLoading(true);
       let res = await ResetQuizAnswer();
       await GetConfig();
+      await GetUser();
       if (res.success) {
         alert("Vote reset successful");
       }
