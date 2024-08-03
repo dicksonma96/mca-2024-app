@@ -73,7 +73,9 @@ export async function GET() {
     return NextResponse.json(
       {
         data: {
-          female: voteCount.filter((item) => item.title != "Mr"),
+          female: voteCount.filter(
+            (item) => item.title != "Mr" || item.title != "Dr_M"
+          ),
           male: voteCount.filter((item) => item.title == "Mr"),
         },
         success: true,
