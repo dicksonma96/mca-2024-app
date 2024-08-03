@@ -133,7 +133,7 @@ function UserListing() {
 }
 
 function User({ user }) {
-  const titleOptions = ["Mr", "Ms", "Mdm"];
+  const titleOptions = ["Mr", "Ms", "Mdm", "Dr_M", "Dr_F"];
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -283,7 +283,7 @@ function User({ user }) {
 }
 
 function AddUser() {
-  const titleOptions = ["Mr", "Ms", "Mdm"];
+  const titleOptions = ["Mr", "Ms", "Mdm", "Dr_M", "Dr_F"];
   const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
