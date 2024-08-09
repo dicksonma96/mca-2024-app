@@ -19,7 +19,7 @@ export default [
     time: "7:05pm",
     agenda: "DINNER - 1ST & 2ND COURSE",
     description: [
-      "黑松露饺 Steamed Black Truffle with Mushroom Chicken Dumplingr",
+      "黑松露饺 Steamed Black Truffle with Mushroom Chicken Dumplings",
       "甜豆炒带子 Sweet Peas with Fresh Scallop",
       "炸杏仁芝士虾 Deep Fried Prawn Roll with Cheese and Almond Flakes",
       "什果鲜虾沙律 Fresh Prawn Salad with mix fruits",
