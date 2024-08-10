@@ -37,7 +37,8 @@ export default function Home() {
           <>
             {userInfo?.brand && <div className="brand">{userInfo?.brand}</div>}
             <h1>
-              {userInfo?.title.includes("Dr") ? "Dr" : userInfo.title}{" "}
+              Welcome,{" "}
+              {/* {userInfo?.title.includes("Dr") ? "Dr" : userInfo.title}{" "} */}
               {userInfo?.name}
             </h1>
             <div className="row">
