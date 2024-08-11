@@ -8,7 +8,8 @@ import UserTable from "../components/userTable";
 import Popup from "../components/popup";
 
 function Quizzes() {
-  const { currentConfig, GetConfig, users,GetUser } = useAdminContext();
+  const { currentConfig, GetConfig, users, GetUser, usersLoading } =
+    useAdminContext();
   const [loading, setLoading] = useState(false);
   const [openResetData, setOpenResetData] = useState(false);
   const status = [
@@ -153,6 +154,16 @@ function Quizzes() {
               >
                 {loading ? "Updating" : "Update"}
               </button>
+
+              <button
+                disabled={usersLoading}
+                className="cta_btn"
+                style={{ alignSelf: "flex-start" }}
+                onClick={GetUser}
+              >
+                {usersLoading ? "Refreshing..." : "Refresh"}
+              </button>
+
               <button
                 className="cta_btn"
                 style={{ background: "red" }}

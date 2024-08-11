@@ -74,7 +74,7 @@ export async function GET() {
       {
         data: {
           female: voteCount.filter(
-            (item) => item.title != "Mr" || item.title != "Dr_M"
+            (item) => item.title != "Mr" && item.title != "Dr_M"
           ),
           male: voteCount.filter((item) => item.title == "Mr"),
         },

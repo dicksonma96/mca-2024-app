@@ -21,7 +21,7 @@ function Schedule() {
 
         <div className="col">
           <h1 className="color2">Event Schedule</h1>
-          <span className="color3">Checkout today agendas</span>
+          <span className="color3">Checkout today's agenda</span>
         </div>
         <span
           className="material-symbols-outlined color1"
